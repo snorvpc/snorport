@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>snor's tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0f8ff;
+      --bg2: #e3f3fd;
+      --surface: #ffffff;
+      --border: rgba(100,180,230,0.25);
+      --border-hover: rgba(100,180,230,0.55);
+      --text-primary: #2a4a6b;
+      --text-secondary: #5a80a0;
+      --text-muted: #9ab8cc;
+      --accent: #4fa8d8;
+      --accent-light: rgba(79,168,216,0.12);
+      --accent-hover: rgba(79,168,216,0.22);
+      --wave: #cce8f8;
+      --tag-faraway: rgba(255,170,80,0.15);
+      --tag-faraway-text: #c07820;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* 波の背景 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 320px;
+      background: linear-gradient(180deg, #cce8f8 0%, #e8f5fd 60%, transparent 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      padding: 18px 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .site-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 40px 0 48px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .hero-icon {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.9);
+      box-shadow: 0 4px 20px rgba(79,168,216,0.25);
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .hero-text h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-text h1 span {
+      color: var(--accent);
+    }
+
+    .hero-text p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Tools section */
+    .tools-section {
+      padding: 8px 0 80px;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 6px 24px rgba(79,168,216,0.12);
+      transform: translateY(-2px);
+    }
+
+    .card-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 20px;
+      width: fit-content;
+      background: var(--tag-faraway);
+      color: var(--tag-faraway-text);
+      letter-spacing: 0.03em;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .card-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .card-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Nunito', sans-serif;
+      padding: 5px 11px;
+      border-radius: 20px;
+      text-decoration: none;
+      border: 1.5px solid var(--border-hover);
+      color: var(--accent);
+      background: var(--accent-light);
+      transition: background 0.15s;
+    }
+
+    .card-link-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .card-link-btn svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+
+    .card-link-gh {
+      color: var(--text-secondary);
+      background: rgba(100,180,230,0.06);
+      border-color: var(--border);
+    }
+
+    .card-link-gh:hover {
+      background: rgba(100,180,230,0.14);
+    }
+
+    .card-url {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: var(--text-muted);
+      word-break: break-all;
+      margin-top: 2px;
+    }
+
+    /* Coming soon */
+    .card-coming {
+      border-style: dashed;
+      border-color: var(--wave);
+      background: rgba(255,255,255,0.5);
+    }
+
+    .card-coming:hover {
+      border-color: var(--border);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .card-coming .card-tag {
+      background: var(--bg2);
+      color: var(--text-muted);
+    }
+
+    .card-coming .card-title,
+    .card-coming .card-desc {
+      color: var(--text-muted);
+    }
+
+    .coming-badge {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    .coming-badge svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1.5px solid var(--border);
+      padding: 24px 0;
+      text-align: center;
+    }
+
+    footer a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    footer a:hover {
+      color: var(--accent);
+    }
+
+    @media (max-width: 580px) {
+      .hero { flex-direction: column; gap: 20px; align-items: flex-start; }
+      .hero-text h1 { font-size: 22px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <span class="site-name">snor's tools 🐬</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container" style="display:flex; align-items:center; gap:32px; flex-wrap:wrap;">
+        <img class="hero-icon" src="icon.jpg" alt="snorのアイコン（イルカ）">
+        <div class="hero-text">
+          <h1>snor<span>'s</span> tools</h1>
+          <p>ゲーム攻略・作業効率化のための自作ツール集。<br>ファラウェイをはじめ、日々をちょっと楽にするものを作っています。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tools-section">
+      <div class="container">
+        <p class="section-label">PUBLISHED TOOLS</p>
+        <div class="grid">
+
+          <!-- faraway-tracker -->
+          <div class="card">
+            <span class="card-tag">Faraway</span>
+            <span class="card-title">Faraway Tracker</span>
+            <span class="card-desc">ファラウェイ向けのトラッカーツール。</span>
+            <div class="card-links">
+              <a class="card-link-btn" href="https://snorvpc.github.io/faraway-tracker/" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                ツールを開く
+              </a>
+              <a class="card-link-btn card-link-gh" href="https://github.com/snorvpc/faraway-tracker" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                GitHub
+              </a>
+            </div>
+            <div class="card-url">https://snorvpc.github.io/faraway-tracker/</div>
+          </div>
+
+          <!-- Coming soon 1 -->
+          <div class="card card-coming">
+            <span class="card-tag">Coming soon</span>
+            <span class="card-title">次のツール</span>
+            <span class="card-desc">作成予定のツールがここに並びます。</span>
+            <div class="coming-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              準備中
+            </div>
+          </div>
+
+          <!-- Coming soon 2 -->
+          <div class="card card-coming">
+            <span class="card-tag">Coming soon</span>
+            <span class="card-title">次のツール</span>
+            <span class="card-desc">作成予定のツールがここに並びます。</span>
+            <div class="coming-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              準備中
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <a href="https://github.com/snorvpc" target="_blank" rel="noopener">github.com/snorvpc</a>
+    </div>
+  </footer>
+
+</body>
+</html>
