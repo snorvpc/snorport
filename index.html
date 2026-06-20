@@ -222,6 +222,13 @@
       margin-top: 2px;
     }
 
+    .card-footer {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--accent);
+      margin-top: auto; padding-top: 8px;
+    }
+    .card-footer svg { width: 13px; height: 13px; }
+
     /* Coming soon */
     .card-coming {
       border-style: dashed;
@@ -329,18 +336,25 @@
             <div class="card-url">https://snorvpc.github.io/faraway-tracker/</div>
           </div>
 
-          <!-- Coming soon 1 -->
-          <div class="card card-coming">
-            <span class="card-tag">Coming soon</span>
-            <span class="card-title">次のツール</span>
-            <span class="card-desc">作成予定のツールがここに並びます。</span>
-            <div class="coming-badge">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              準備中
+          <!-- azul-tracker -->
+          <div class="card">
+            <span class="card-tag" style="background:rgba(30,111,168,0.15);color:#1a5a8a;">AZUL</span>
+            <span class="card-title">AZUL タイルトラッカー</span>
+            <span class="card-desc">AZULのタイル枚数をタップでカウント。5ラウンド目の出現タイルを自動予測。</span>
+            <div class="card-links">
+              <a class="card-link-btn" href="https://snorvpc.github.io/azul/" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                ツールを開く
+              </a>
+              <a class="card-link-btn card-link-gh" href="https://github.com/snorvpc/azul" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                GitHub
+              </a>
             </div>
+            <div class="card-url">https://snorvpc.github.io/azul/</div>
           </div>
 
-          <!-- Coming soon 2 -->
+          <!-- Coming soon -->
           <div class="card card-coming">
             <span class="card-tag">Coming soon</span>
             <span class="card-title">次のツール</span>
@@ -355,6 +369,37 @@
       </div>
     </section>
   </main>
+
+  <section class="tools-section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-title">LINKS</span>
+      </div>
+      <div class="grid">
+
+        <a class="card" href="https://youtube.com/@ilcarena" target="_blank" rel="noopener">
+          <span class="card-tag" style="background:rgba(255,0,0,0.1);color:#c00;">YouTube</span>
+          <span class="card-title">ilcarena</span>
+          <span class="card-desc">snorのYouTubeチャンネル。</span>
+          <div class="card-footer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            チャンネルを見る
+          </div>
+        </a>
+
+        <a class="card" href="https://www.bandlab.com/aliesnor" target="_blank" rel="noopener">
+          <span class="card-tag" style="background:rgba(255,140,0,0.12);color:#a05000;">BandLab</span>
+          <span class="card-title">aliesnor</span>
+          <span class="card-desc">snorの音楽作品。BandLabで公開中。</span>
+          <div class="card-footer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            音楽を聴く
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
 
   <footer>
     <div class="container">
