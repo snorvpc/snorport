@@ -1,411 +1,439 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>snor's tools</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>パパヨー カウンター</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#f0f6ff;padding:1rem;color:#222;min-height:100vh}
+#app{max-width:480px;margin:0 auto}
 
-    :root {
-      --bg: #f0f8ff;
-      --bg2: #e3f3fd;
-      --surface: #ffffff;
-      --border: rgba(100,180,230,0.25);
-      --border-hover: rgba(100,180,230,0.55);
-      --text-primary: #2a4a6b;
-      --text-secondary: #5a80a0;
-      --text-muted: #9ab8cc;
-      --accent: #4fa8d8;
-      --accent-light: rgba(79,168,216,0.12);
-      --accent-hover: rgba(79,168,216,0.22);
-      --wave: #cce8f8;
-      --tag-faraway: rgba(255,170,80,0.15);
-      --tag-faraway-text: #c07820;
-    }
+/* TOP ROW */
+.top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:8px}
+.top-row h2{font-size:16px;font-weight:700;color:#1a3a5c;flex:1}
+.top-btns{display:flex;gap:6px;align-items:center}
+.icon-btn{font-size:12px;padding:4px 10px;border-radius:8px;border:1px solid #ccc;background:#fff;color:#555;cursor:pointer;white-space:nowrap}
+.icon-btn:hover{background:#eef4ff}
+.icon-btn.pass-active{background:#FCEBEB;border-color:#E24B4A;color:#A32D2D}
 
-    body {
-      background: var(--bg);
-      color: var(--text-primary);
-      font-family: 'Nunito', sans-serif;
-      font-size: 15px;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
+/* PLAYERS */
+.players-row{display:flex;align-items:center;gap:8px;margin-bottom:1rem;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #dde6f0}
+.players-label{font-size:13px;color:#555;white-space:nowrap}
+.pcount-btn{width:28px;height:28px;border-radius:6px;border:1px solid #ccc;background:#f8f8f8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.pcount-btn:hover{background:#eef4ff}
+.pcount-btn:active{transform:scale(0.95)}
+.players-row input[type=range]{flex:1}
+.players-val{font-size:14px;font-weight:700;color:#1a3a5c;min-width:28px;text-align:center}
+.ace-note{font-size:11px;color:#A32D2D;font-weight:700;white-space:nowrap}
 
-    /* 波の背景 */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 320px;
-      background: linear-gradient(180deg, #cce8f8 0%, #e8f5fd 60%, transparent 100%);
-      z-index: 0;
-      pointer-events: none;
-    }
+/* SUIT BLOCKS */
+.suit-block{margin-bottom:0.65rem;padding:8px 12px;border-radius:12px;border:1px solid #dde6f0;background:#fff}
+.suit-header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;margin-bottom:6px;gap:6px}
+.suit-left{display:flex;align-items:center;gap:6px;min-width:0}
+.suit-name{font-size:13px;font-weight:700;white-space:nowrap}
+.score-badge{font-size:11px;font-weight:700;padding:1px 6px;border-radius:10px;background:#f0f6ff;color:#555;white-space:nowrap}
+.suit-ctrl{display:flex;align-items:center;gap:4px;justify-content:center}
+.suit-meta{display:flex;gap:4px;align-items:center;justify-content:flex-end}
+.meta-val{font-size:12px;font-weight:700;color:#222;white-space:nowrap}
+.meta-danger{color:#A32D2D}
+.meta-warn{font-size:10px;color:#A32D2D;font-weight:700}
 
-    .container {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 0 24px;
-      position: relative;
-      z-index: 1;
-    }
+/* BAR */
+.bar-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.bar-wrap{flex:1;position:relative;height:22px;border-radius:6px;overflow:hidden;background:#eee;cursor:ew-resize;touch-action:none;user-select:none;-webkit-user-select:none}
+.bar-fill{height:100%;border-radius:6px;transition:width 0.08s}
+.bar-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:11px;font-weight:700;color:#222;pointer-events:none;white-space:nowrap}
+.suit-ctrl{display:flex;align-items:center;gap:4px;justify-content:center;width:100%}
+.ctrl-minus{width:180px;height:22px;border-radius:6px;border:1px solid #ddd;background:#f8f8f8;font-size:14px;font-weight:700;cursor:pointer;color:#A32D2D;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ctrl-minus:hover{background:#FCEBEB;border-color:#E24B4A}
+.ctrl-minus:active{transform:scale(0.96)}
+.ctrl-plus{width:26px;height:22px;border-radius:6px;border:1px solid #ddd;background:#f8f8f8;font-size:14px;font-weight:700;cursor:pointer;color:#27500A;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ctrl-plus:hover{background:#dcfce7;border-color:#22c55e}
+.ctrl-plus:active{transform:scale(0.96)}
 
-    /* Header */
-    header {
-      padding: 18px 0;
-    }
+/* CARDS */
+.card-grid{display:flex;flex-wrap:wrap;gap:3px;touch-action:none}
+.card-btn{width:28px;height:22px;border-radius:3px;border:1px solid #ddd;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;user-select:none;-webkit-user-select:none;touch-action:none;position:relative;transition:opacity 0.1s}
+.card-btn.out{opacity:0.12}
+.card-btn.passed{border-style:dashed}
+.card-btn.passed::after{content:'●';position:absolute;top:-4px;right:-3px;font-size:7px;color:#A32D2D}
+.ace-placeholder{width:28px;height:22px;display:inline-block}
 
-    .header-inner {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+/* FOOTER */
+.footer{margin-top:1.5rem;text-align:center}
+.footer a{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#1a3a5c;text-decoration:none;opacity:0.7}
+.footer a:hover{opacity:1}
+.footer img{width:22px;height:22px;object-fit:contain}
 
-    .site-name {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-
-    /* Hero */
-    .hero {
-      padding: 40px 0 48px;
-      display: flex;
-      align-items: center;
-      gap: 32px;
-    }
-
-    .hero-icon {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      border: 3px solid rgba(255,255,255,0.9);
-      box-shadow: 0 4px 20px rgba(79,168,216,0.25);
-      flex-shrink: 0;
-      object-fit: cover;
-    }
-
-    .hero-text h1 {
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 6px;
-      letter-spacing: -0.01em;
-    }
-
-    .hero-text h1 span {
-      color: var(--accent);
-    }
-
-    .hero-text p {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.7;
-    }
-
-    /* Tools section */
-    .tools-section {
-      padding: 8px 0 80px;
-    }
-
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-      margin-bottom: 16px;
-    }
-
-    /* Grid */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 14px;
-    }
-
-    /* Card */
-    .card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
-    }
-
-    .card:hover {
-      border-color: var(--border-hover);
-      box-shadow: 0 6px 24px rgba(79,168,216,0.12);
-      transform: translateY(-2px);
-    }
-
-    .card-tag {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 20px;
-      width: fit-content;
-      background: var(--tag-faraway);
-      color: var(--tag-faraway-text);
-      letter-spacing: 0.03em;
-    }
-
-    .card-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .card-desc {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.65;
-      flex: 1;
-    }
-
-    .card-links {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 2px;
-    }
-
-    .card-link-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 12px;
-      font-weight: 600;
-      font-family: 'Nunito', sans-serif;
-      padding: 5px 11px;
-      border-radius: 20px;
-      text-decoration: none;
-      border: 1.5px solid var(--border-hover);
-      color: var(--accent);
-      background: var(--accent-light);
-      transition: background 0.15s;
-    }
-
-    .card-link-btn:hover {
-      background: var(--accent-hover);
-    }
-
-    .card-link-btn svg {
-      width: 13px;
-      height: 13px;
-      flex-shrink: 0;
-    }
-
-    .card-link-gh {
-      color: var(--text-secondary);
-      background: rgba(100,180,230,0.06);
-      border-color: var(--border);
-    }
-
-    .card-link-gh:hover {
-      background: rgba(100,180,230,0.14);
-    }
-
-    .card-url {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10.5px;
-      color: var(--text-muted);
-      word-break: break-all;
-      margin-top: 2px;
-    }
-
-    .card-footer {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 12px; color: var(--accent);
-      margin-top: auto; padding-top: 8px;
-    }
-    .card-footer svg { width: 13px; height: 13px; }
-
-    /* Coming soon */
-    .card-coming {
-      border-style: dashed;
-      border-color: var(--wave);
-      background: rgba(255,255,255,0.5);
-    }
-
-    .card-coming:hover {
-      border-color: var(--border);
-      box-shadow: none;
-      transform: none;
-    }
-
-    .card-coming .card-tag {
-      background: var(--bg2);
-      color: var(--text-muted);
-    }
-
-    .card-coming .card-title,
-    .card-coming .card-desc {
-      color: var(--text-muted);
-    }
-
-    .coming-badge {
-      font-size: 12px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-top: 2px;
-    }
-
-    .coming-badge svg {
-      width: 13px;
-      height: 13px;
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1.5px solid var(--border);
-      padding: 24px 0;
-      text-align: center;
-    }
-
-    footer a {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    footer a:hover {
-      color: var(--accent);
-    }
-
-    @media (max-width: 580px) {
-      .hero { flex-direction: column; gap: 20px; align-items: flex-start; }
-      .hero-text h1 { font-size: 22px; }
-      .grid { grid-template-columns: 1fr; }
-    }
-  </style>
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:14px;padding:1.25rem;max-width:400px;width:100%;max-height:85vh;overflow-y:auto;position:relative}
+.modal h3{font-size:15px;font-weight:700;color:#1a3a5c;margin-bottom:0.75rem}
+.modal-close{position:absolute;top:10px;right:12px;background:none;border:none;font-size:18px;cursor:pointer;color:#888}
+.modal p{font-size:13px;line-height:1.7;color:#333;margin-bottom:0.6rem}
+.modal b{color:#1a3a5c}
+.modal .rule-item{display:flex;gap:8px;margin-bottom:0.5rem;font-size:13px;line-height:1.6}
+.modal .rule-icon{flex-shrink:0;font-weight:700}
+</style>
 </head>
 <body>
-
-  <header>
-    <div class="container">
-      <div class="header-inner">
-        <span class="site-name">snor's tools 🐬</span>
-      </div>
+<div id="app">
+  <div class="top-row">
+    <h2>パパヨー カウンター</h2>
+    <div class="top-btns">
+      <button class="icon-btn" id="pass-btn" onclick="togglePassMode()">● パスモード</button>
+      <button class="icon-btn" onclick="document.getElementById('modal').classList.add('open')">？ 説明書</button>
+      <button class="icon-btn" onclick="resetAll()">↺ リセット</button>
     </div>
-  </header>
+  </div>
 
-  <main>
-    <section class="hero">
-      <div class="container" style="display:flex; align-items:center; gap:32px; flex-wrap:wrap;">
-        <img class="hero-icon" src="icon.jpg" alt="snorのアイコン（イルカ）">
-        <div class="hero-text">
-          <h1>snor<span>'s</span> tools</h1>
-          <p>ゲーム攻略・作業効率化のための自作ツール集。<br>ファラウェイをはじめ、日々をちょっと楽にするものを作っています。</p>
+  <div class="players-row">
+    <span class="players-label">人数</span>
+    <button class="pcount-btn" onclick="changePlayers(-1)">－</button>
+    <input type="range" min="3" max="8" step="1" value="4" id="players-slider" oninput="onPlayersSlider()">
+    <button class="pcount-btn" onclick="changePlayers(1)">＋</button>
+    <span class="players-val" id="players-val">4人</span>
+    <span class="ace-note" id="ace-note" style="display:none">A除外</span>
+  </div>
+
+  <div id="suits-area"></div>
+
+  <div class="footer">
+    <a href="https://snorvpc.github.io/snorport/" target="_blank">
+      <img src="https://snorvpc.github.io/snorport/dolphee.png" alt="dolphee" onerror="this.style.display='none'">
+      snorport
+    </a>
+  </div>
+</div>
+
+<!-- MANUAL MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕</button>
+    <h3>📖 パパヨー カウンターの使い方</h3>
+
+    <p><b>人数スライダー</b><br>
+    3〜8人をスライダーまたは ±ボタンで選択。7・8人のときは各スートのA（1）が自動で除外されます。</p>
+
+    <p><b>カードをタップして記録</b></p>
+    <div class="rule-item"><span class="rule-icon">□</span><span>通常（まだ出ていない）</span></div>
+    <div class="rule-item"><span class="rule-icon" style="opacity:0.2">□</span><span>タップ → 出済み（薄く表示）</span></div>
+    <div class="rule-item"><span class="rule-icon">□</span><span>もう一度タップ → 未出に戻る</span></div>
+
+    <p><b>パスモード</b><br>
+    上部の「● パスモード」ボタンをONにすると赤くなります。この状態でカードをタップすると●マーク（パス済み）を付与／解除できます。パスしたカードは残り枚数に影響しません。</p>
+
+    <p><b>ドラッグでまとめて記録</b><br>
+    通常モード中にカードをなぞると、なぞった全カードを一気に出済み／未出に切り替えられます。</p>
+
+    <p><b>バーで枚数を直接セット</b><br>
+    バーを左右にドラッグすると残り枚数を直接セットできます。カード記録と食い違う場合は「カードと齟齬」と表示されます。<br>
+    バー右の <b>－</b> で1枚減、<b>＋</b> で1枚増。</p>
+
+    <p><b>パヨー残り点数</b><br>
+    パヨー（黒カード）の残り合計点（1〜20の合計＝210点から出た点を引いた値）をリアルタイム表示。</p>
+  </div>
+</div>
+
+<script>
+const SUITS=[
+  {id:'S',sym:'♠',name:'スペード',max:10,fill:'#85B7EB',textcol:'#0C447C'},
+  {id:'H',sym:'♥',name:'ハート',  max:10,fill:'#F09595',textcol:'#791F1F'},
+  {id:'D',sym:'♦',name:'ダイヤ',  max:10,fill:'#FDBA74',textcol:'#9A3412'},
+  {id:'C',sym:'♣',name:'クラブ',  max:10,fill:'#97C459',textcol:'#27500A'},
+  {id:'P',sym:'',name:'パヨー',  max:20,fill:'#B4B2A9',textcol:'#444441'},
+];
+const PAYOO_TOTAL=210; // 1+2+...+20
+
+let cardState={};
+let barCount={};
+let players=4;
+
+let cardDragging=false,cardDragTarget=null,cardDraggedKeys=new Set();
+let barDragging=false,barDragSuit=null;
+
+function initState(){
+  SUITS.forEach(s=>{
+    for(let i=1;i<=s.max;i++) cardState[s.id+i]=0;
+    barCount[s.id]=s.max;
+  });
+}
+
+function removeAces(){return players>=7;}
+function visibleMin(id){return removeAces()&&id!=='P'?2:1;}
+function suitMax(id){
+  const s=SUITS.find(s=>s.id===id);
+  return removeAces()&&id!=='P'?s.max-1:s.max;
+}
+
+function getCardRemaining(id){
+  const s=SUITS.find(s=>s.id===id);
+  let rem=0;
+  for(let i=visibleMin(id);i<=s.max;i++) if(cardState[id+i]!==1) rem++;
+  return rem;
+}
+
+function getMinMax(id){
+  const s=SUITS.find(s=>s.id===id);
+  let minV=null,maxV=null;
+  for(let i=visibleMin(id);i<=s.max;i++){
+    if(cardState[id+i]!==1){if(minV===null)minV=i;maxV=i;}
+  }
+  return{min:minV??'-',max:maxV??'-'};
+}
+
+function getPayooScoreOut(){
+  let sc=0;
+  for(let i=1;i<=20;i++) if(cardState['P'+i]>0) sc+=i;
+  return sc;
+}
+
+function updateSuitUI(id){
+  const s=SUITS.find(s=>s.id===id);
+  const total=suitMax(id);
+  barCount[id]=Math.max(0,Math.min(total,barCount[id]));
+  const bar=barCount[id];
+  const cardRem=getCardRemaining(id);
+  const pct=Math.round((bar/total)*100);
+  const mismatch=bar!==cardRem;
+
+  const f=document.getElementById('fill-'+id);
+  const l=document.getElementById('lbl-'+id);
+  const r=document.getElementById('bar-rem-'+id);
+  const mm=document.getElementById('mismatch-'+id);
+  if(f) f.style.width=pct+'%';
+  if(l) l.textContent=bar+' 枚残り';
+  if(r){const mm2=getMinMax(id);r.textContent=mm2.min+'/'+mm2.max;r.className='meta-val'+(bar===0?' meta-danger':'');}
+  if(mm) mm.style.display=mismatch?'inline':'none';
+
+  for(let i=1;i<=s.max;i++){
+    const btn=document.getElementById('c-'+id+i);
+    if(!btn) continue;
+    const st=cardState[id+i];
+    btn.className='card-btn'+(st===1?' out':st===2?' passed':'');
+  }
+
+  if(id==='P'){
+    const sc=document.getElementById('payoo-score');
+    if(sc) sc.textContent='残り: '+(PAYOO_TOTAL-getPayooScoreOut())+'pt';
+  }
+}
+
+function getCardAtPoint(x,y){
+  const el=document.elementFromPoint(x,y);
+  if(!el) return null;
+  const btn=el.closest('.card-btn');
+  return btn?btn.dataset.key||null:null;
+}
+
+function getBarAtPoint(x,y){
+  const el=document.elementFromPoint(x,y);
+  if(!el) return null;
+  const bar=el.closest('.bar-wrap');
+  return bar?bar.dataset.suit||null:null;
+}
+
+function dragCard(key){
+  if(!key||cardDraggedKeys.has(key)) return;
+  cardDraggedKeys.add(key);
+  const id=key.startsWith('P')?'P':key[0];
+  const prev=cardState[key];
+  if(cardDragTarget===1&&(prev===0||prev===2)){
+    cardState[key]=1;
+    if(prev===0) barCount[id]=Math.max(0,barCount[id]-1);
+    // prev===2(パス)→出済みはbarCount変化なし（パス時点で枚数は戻してある）
+  } else if(cardDragTarget===0&&prev===1){
+    cardState[key]=0;
+    barCount[id]=Math.min(suitMax(id),barCount[id]+1);
+  }
+  updateSuitUI(id);
+}
+
+function updateBarFromPointer(id,clientX){
+  const bar=document.querySelector('.bar-wrap[data-suit="'+id+'"]');
+  if(!bar) return;
+  const rect=bar.getBoundingClientRect();
+  const ratio=Math.max(0,Math.min(1,(clientX-rect.left)/rect.width));
+  barCount[id]=Math.round(ratio*suitMax(id));
+  updateSuitUI(id);
+}
+
+let pointerStartX=0,pointerStartY=0,pointerStartKey=null,pointerMoved=false;
+
+function onPointerDown(e){
+  if(e.target.closest('button')||e.target.closest('input')||e.target.closest('.modal-overlay')) return;
+  const x=e.touches?e.touches[0].clientX:e.clientX;
+  const y=e.touches?e.touches[0].clientY:e.clientY;
+  pointerStartX=x; pointerStartY=y; pointerMoved=false;
+  const barSuit=getBarAtPoint(x,y);
+  if(barSuit){barDragging=true;barDragSuit=barSuit;updateBarFromPointer(barSuit,x);e.preventDefault();return;}
+  const key=getCardAtPoint(x,y);
+  if(key){
+    pointerStartKey=key;
+    cardDragging=true;
+    cardDragTarget=(!passMode&&(cardState[key]===0||cardState[key]===2))?1:(!passMode&&cardState[key]===1)?0:null;
+    cardDraggedKeys=new Set();
+    e.preventDefault();
+  }
+}
+
+function onPointerMove(e){
+  const x=e.touches?e.touches[0].clientX:e.clientX;
+  const y=e.touches?e.touches[0].clientY:e.clientY;
+  if(barDragging&&barDragSuit){updateBarFromPointer(barDragSuit,x);e.preventDefault();return;}
+  if(cardDragging){
+    const dx=Math.abs(x-pointerStartX),dy=Math.abs(y-pointerStartY);
+    if(!pointerMoved&&(dx>6||dy>6)){
+      pointerMoved=true;
+      // ドラッグ開始: passed状態は対象外
+      if(pointerStartKey&&cardState[pointerStartKey]!==2) dragCard(pointerStartKey);
+    }
+    if(pointerMoved&&cardDragTarget!==null) dragCard(getCardAtPoint(x,y));
+    e.preventDefault();
+  }
+}
+
+let passMode=false;
+
+function togglePassMode(){
+  passMode=!passMode;
+  document.getElementById('pass-btn').classList.toggle('pass-active',passMode);
+}
+
+function cycleCard(key){
+  const id=key.startsWith('P')?'P':key[0];
+  const prev=cardState[key];
+
+  if(passMode){
+    // パスモード: 未出/出済み → パス●トグル、パス → 未出
+    if(prev===2){cardState[key]=0;}
+    else{cardState[key]=2;
+      // 出済みだった場合はbarCountを戻す
+      if(prev===1) barCount[id]=Math.min(suitMax(id),barCount[id]+1);
+    }
+  } else {
+    // 通常モード: 未出 ↔ 出済み（2段階）、パス(2)→出済み(1)も可
+    if(prev===0){cardState[key]=1;barCount[id]=Math.max(0,barCount[id]-1);}
+    else if(prev===1){cardState[key]=0;barCount[id]=Math.min(suitMax(id),barCount[id]+1);}
+    else if(prev===2){cardState[key]=1;barCount[id]=Math.max(0,barCount[id]-1);}
+  }
+  updateSuitUI(id);
+}
+
+function onPointerUp(){
+  if(cardDragging&&!pointerMoved&&pointerStartKey){
+    cycleCard(pointerStartKey);
+  }
+  barDragging=false;barDragSuit=null;
+  cardDragging=false;cardDragTarget=null;cardDraggedKeys=new Set();
+  pointerStartKey=null;pointerMoved=false;
+}
+
+function changeBar(id,delta){
+  barCount[id]=Math.max(0,Math.min(suitMax(id),barCount[id]+delta));
+  updateSuitUI(id);
+}
+
+function changePlayers(delta){
+  players=Math.max(3,Math.min(8,players+delta));
+  document.getElementById('players-slider').value=players;
+  applyPlayers();
+}
+
+function onPlayersSlider(){
+  players=parseInt(document.getElementById('players-slider').value);
+  applyPlayers();
+}
+
+function applyPlayers(){
+  document.getElementById('players-val').textContent=players+'人';
+  document.getElementById('ace-note').style.display=players>=7?'inline':'none';
+  SUITS.forEach(s=>{if(s.id!=='P') barCount[s.id]=Math.min(barCount[s.id],suitMax(s.id));});
+  render();
+}
+
+function render(){
+  const area=document.getElementById('suits-area');
+  let html='';
+  SUITS.forEach(suit=>{
+    const total=suitMax(suit.id);
+    const bar=Math.min(barCount[suit.id],total);
+    const pct=Math.round((bar/total)*100);
+    const cardRem=getCardRemaining(suit.id);
+    const mismatch=bar!==cardRem;
+    const minN=visibleMin(suit.id);
+
+    let cards='';
+    if(suit.id==='P'){
+      // パヨー: 2行に分割 (1-10 / 11-20)
+      cards+='<div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:3px">';
+      for(let i=1;i<=10;i++){
+        const key='P'+i;const st=cardState[key];
+        cards+=`<div class="card-btn${st===1?' out':st===2?' passed':''}" id="c-${key}" data-key="${key}" style="color:${suit.textcol}">${i}</div>`;
+      }
+      cards+='</div><div style="display:flex;flex-wrap:wrap;gap:3px">';
+      for(let i=11;i<=20;i++){
+        const key='P'+i;const st=cardState[key];
+        cards+=`<div class="card-btn${st===1?' out':st===2?' passed':''}" id="c-${key}" data-key="${key}" style="color:${suit.textcol}">${i}</div>`;
+      }
+      cards+='</div>';
+    } else {
+      cards='<div class="card-grid">';
+      for(let i=1;i<=suit.max;i++){
+        if(i<minN){cards+=`<div class="ace-placeholder"></div>`;continue;}
+        const key=suit.id+i;const st=cardState[key];
+        cards+=`<div class="card-btn${st===1?' out':st===2?' passed':''}" id="c-${key}" data-key="${key}" style="color:${suit.textcol}">${i}</div>`;
+      }
+      cards+='</div>';
+    }
+
+    const mm2=getMinMax(suit.id);
+    const metaText=mm2.min+'/'+mm2.max;
+
+    const scoreBadge=suit.id==='P'
+      ?`<span class="score-badge" id="payoo-score">残り: ${PAYOO_TOTAL-getPayooScoreOut()}pt</span>`
+      :'';
+
+    html+=`<div class="suit-block">
+      <div class="suit-header">
+        <div class="suit-left">
+          <span class="suit-name" style="color:${suit.textcol}">${suit.sym} ${suit.name}</span>
+          ${scoreBadge}
+        </div>
+        <div class="suit-ctrl">
+          <button class="ctrl-minus" onclick="changeBar('${suit.id}',-1)">－</button>
+          <button class="ctrl-plus" onclick="changeBar('${suit.id}',+1)">＋</button>
+        </div>
+        <div class="suit-meta">
+          <span class="meta-warn" id="mismatch-${suit.id}" style="display:${mismatch?'inline':'none'}">齟齬</span>
+          <span class="meta-val${bar===0?' meta-danger':''}" id="bar-rem-${suit.id}">${metaText}</span>
         </div>
       </div>
-    </section>
-
-    <section class="tools-section">
-      <div class="container">
-        <p class="section-label">PUBLISHED TOOLS</p>
-        <div class="grid">
-
-          <!-- faraway-tracker -->
-          <div class="card">
-            <span class="card-tag">Faraway</span>
-            <span class="card-title">Faraway Tracker</span>
-            <span class="card-desc">ファラウェイ向けのトラッカーツール。</span>
-            <div class="card-links">
-              <a class="card-link-btn" href="https://snorvpc.github.io/faraway-tracker/" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                ツールを開く
-              </a>
-              <a class="card-link-btn card-link-gh" href="https://github.com/snorvpc/faraway-tracker" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                GitHub
-              </a>
-            </div>
-            <div class="card-url">https://snorvpc.github.io/faraway-tracker/</div>
-          </div>
-
-          <!-- azul-tracker -->
-          <div class="card">
-            <span class="card-tag" style="background:rgba(30,111,168,0.15);color:#1a5a8a;">AZUL</span>
-            <span class="card-title">AZUL タイルトラッカー</span>
-            <span class="card-desc">AZULのタイル枚数をタップでカウント。5ラウンド目の出現タイルを自動予測。</span>
-            <div class="card-links">
-              <a class="card-link-btn" href="https://snorvpc.github.io/azul/" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                ツールを開く
-              </a>
-              <a class="card-link-btn card-link-gh" href="https://github.com/snorvpc/azul" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                GitHub
-              </a>
-            </div>
-            <div class="card-url">https://snorvpc.github.io/azul/</div>
-          </div>
-
-          <!-- Coming soon -->
-          <div class="card card-coming">
-            <span class="card-tag">Coming soon</span>
-            <span class="card-title">次のツール</span>
-            <span class="card-desc">作成予定のツールがここに並びます。</span>
-            <div class="coming-badge">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              準備中
-            </div>
-          </div>
-
+      <div class="bar-row">
+        <div class="bar-wrap" data-suit="${suit.id}">
+          <div class="bar-fill" id="fill-${suit.id}" style="width:${pct}%;background:${suit.fill}"></div>
+          <span class="bar-label" id="lbl-${suit.id}">${bar} 枚残り</span>
         </div>
       </div>
-    </section>
-  </main>
+      <div class="card-area">${cards}</div>
+    </div>`;
+  });
+  area.innerHTML=html;
+}
 
-  <section class="tools-section" style="padding-top:0;">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-title">LINKS</span>
-      </div>
-      <div class="grid">
+document.addEventListener('mousedown',onPointerDown,{passive:false});
+document.addEventListener('touchstart',onPointerDown,{passive:false});
+document.addEventListener('mousemove',onPointerMove,{passive:false});
+document.addEventListener('touchmove',onPointerMove,{passive:false});
+document.addEventListener('mouseup',onPointerUp);
+document.addEventListener('touchend',onPointerUp);
 
-        <a class="card" href="https://youtube.com/@ilcarena" target="_blank" rel="noopener">
-          <span class="card-tag" style="background:rgba(255,0,0,0.1);color:#c00;">YouTube</span>
-          <span class="card-title">ilcarena</span>
-          <span class="card-desc">snorのYouTubeチャンネル。</span>
-          <div class="card-footer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            チャンネルを見る
-          </div>
-        </a>
-
-        <a class="card" href="https://www.bandlab.com/aliesnor" target="_blank" rel="noopener">
-          <span class="card-tag" style="background:rgba(255,140,0,0.12);color:#a05000;">BandLab</span>
-          <span class="card-title">aliesnor</span>
-          <span class="card-desc">snorの音楽作品。BandLabで公開中。</span>
-          <div class="card-footer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            音楽を聴く
-          </div>
-        </a>
-
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <a href="https://github.com/snorvpc" target="_blank" rel="noopener">github.com/snorvpc</a>
-    </div>
-  </footer>
-
+function resetAll(){initState();render();}
+initState();
+render();
+</script>
 </body>
 </html>
